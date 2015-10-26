@@ -14,73 +14,69 @@ import org.jgroups.util.Util;
 import java.io.*;
 import java.util.List;
 import java.util.LinkedList;
+import java.util.Scanner;
 
-public class JStackSets extends ReceiverAdapter {
-    JChannel channel;
-    String user_name=System.getProperty("user.name", "n/a");
-    final List<String> state=new LinkedList<String>();
-
-    public void viewAccepted(View new_view) {
-        System.out.println("** view: " + new_view);
-    }
-
-    public void receive(Message msg) {
-        String line=msg.getSrc() + ": " + msg.getObject();
-        System.out.println(line);
-        synchronized(state) {
-            state.add(line);
-        }
-    }
-
-    public void getState(OutputStream output) throws Exception {
-        synchronized(state) {
-            Util.objectToStream(state, new DataOutputStream(output));
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    public void setState(InputStream input) throws Exception {
-        List<String> list=(List<String>)Util.objectFromStream(new DataInputStream(input));
-        synchronized(state) {
-            state.clear();
-            state.addAll(list);
-        }
-        System.out.println("received state (" + list.size() + " messages in chat history):");
-        for(String str: list) {
-            System.out.println(str);
-        }
-    }
-
-
-    private void start() throws Exception {
-        channel=new JChannel();
-        channel.setReceiver(this);
-        channel.connect("ChatCluster");
-        channel.getState(null, 10000);
-        eventLoop();
-        channel.close();
-    }
-
-    private void eventLoop() {
-        BufferedReader in=new BufferedReader(new InputStreamReader(System.in));
-        while(true) {
-            try {
-                System.out.print("> "); System.out.flush();
-                String line=in.readLine().toLowerCase();
-                if(line.startsWith("quit") || line.startsWith("exit")) {
-                    break;
-                }
-                line="[" + user_name + "] " + line;
-                Message msg=new Message(null, null, line);
-                channel.send(msg);
-            }
-            catch(Exception e) {
-            }
-        }
-    }
-
-
+public class JStackSets {
+    
+    private static boolean exit = false;
+    private static Scanner in = new Scanner(System.in);
+    
     public static void main(String[] args) throws Exception {
-        new JStackSets().start();
+        int opt = 0;
+	  while (!exit) {
+		System.out.println("Select data structure:");
+		System.out.println("1. Integer Stack");
+		System.out.println("2. Integer Set");
+		System.out.print("   > ");
+		opt = in.nextInt();
+		switch (opt){
+		    case 1:
+			  ImplStack();
+			  break;
+		    case 2:
+			  ImplSet();
+			  break;
+		    default: 
+			  System.out.println("Wrong option!");
+				
+		}
+	  }
+    }
+    
+    public static void ImplStack(){
+	  JStack<Integer> integerStack = new JStack<>();
+	  while (!exit){
+		System.out.println("Current stack state:");
+		System.out.println(integerStack.toString());
+		
+		System.out.println("Input operation on Integer Stack:");
+		System.out.println("1. Push");
+		System.out.println("2. Pop");
+		System.out.println("3. Check Top Value");
+		System.out.println("4. Exit");
+		    
+		int opt = in.nextInt();
+		switch (opt){
+		    case 1:
+			  System.out.print("Input push value: ");
+			  int temp;
+			  temp = in.nextInt();
+			  integerStack.push(temp);
+		    case 2:
+			  System.out.println("Pop'd value: " + integerStack.pop());
+		    case 3:
+			  System.out.println("Top value: " + integerStack.top());
+		    case 4:
+			  exit = true;
+			  
+		    default:
+			  System.out.println("Wrong option!");
+		}
+		
+		
+	  }
+    }
+    public static void ImplSet(){
+	  
     }
 }
