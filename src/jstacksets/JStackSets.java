@@ -79,7 +79,45 @@ public class JStackSets {
 		}
 	  }
     }
-    public static void ImplSet(){
+    public static void ImplSet() throws Exception{
 	  
+	  JSet<Integer> integerSet = new JSet<>();
+	  while (!exit){
+		System.out.println("Current stack state:");
+		System.out.println(integerSet.toString());
+		
+		System.out.println("Input operation on Integer Set:");
+		System.out.println("1. Add");
+		System.out.println("2. Remove");
+		System.out.println("3. Check Availability");
+		System.out.println("4. Exit");
+		    
+		int temp;
+		int opt = in.nextInt();
+		switch (opt){
+		    case 1:
+			  System.out.print("Input add value: ");
+			  temp = in.nextInt();
+			  integerSet.add(temp);
+			  break;
+		    case 2:
+			  System.out.print("Input remove value: ");
+			  temp = in.nextInt();
+			  integerSet.remove(temp);
+			  break;
+		    case 3:
+			  System.out.print("Input value for checking: ");
+			  temp = in.nextInt();
+			  System.out.println(integerSet.contains(temp));
+			  break;
+		    case 4:
+			  exit = true;
+			  System.exit(0);
+			  break;
+			  
+		    default:
+			  System.out.println("Wrong option!");
+		}
+	  }
     }
 }
