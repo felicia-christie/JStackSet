@@ -33,7 +33,7 @@ public class JSet<T> extends ReceiverAdapter {
         innerSet = new ArrayList<>();
         channel = new JChannel();
         channel.setReceiver(this);
-        channel.connect("JStack");
+        channel.connect("JSet");
         channel.getState(null, 10000);
     }
     
@@ -42,7 +42,7 @@ public class JSet<T> extends ReceiverAdapter {
     }
 
     public void receive(Message msg) {
-        if (!msg.getSrc().equals(channel.getName())){
+        if (!msg.getSrc().toString().equals(channel.getName())){
             JCommand c = (JCommand) msg.getObject();
             if (c.command.equals("remove")){
                 synchronized(innerSet){
@@ -76,7 +76,7 @@ public class JSet<T> extends ReceiverAdapter {
 
     @SuppressWarnings("unchecked")
     public void setState(InputStream input) throws Exception {
-        Stack<T> list=(Stack<T>)Util.objectFromStream(new DataInputStream(input));
+        ArrayList<T> list=(ArrayList<T>)Util.objectFromStream(new DataInputStream(input));
         synchronized(innerSet) {
             innerSet.clear();
             innerSet.addAll(list);
@@ -87,6 +87,7 @@ public class JSet<T> extends ReceiverAdapter {
         synchronized(innerSet){
             if (!innerSet.contains(obj)) {
                 innerSet.add(obj);
+                send("add",obj);
                 return true;
             } else {
                 return false;
@@ -97,8 +98,9 @@ public class JSet<T> extends ReceiverAdapter {
 
     public boolean remove(T obj) {
         synchronized(innerSet){
-            if (!innerSet.contains(obj)) {
+            if (innerSet.contains(obj)) {
                 innerSet.remove(obj);
+                send("remove",obj);
                 return true;
             } else {
                 return false;
