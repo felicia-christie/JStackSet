@@ -40,10 +40,16 @@ public class JSet<T> {
     }
     
     public String toString(){
-	  String ret = "";
+	  String ret = "{ ";
 	  for (int i = 0; i < innerSet.size(); i++){
-		ret += innerSet.get(i).toString();
+                if(i == innerSet.size() - 1 ){
+                    ret += innerSet.get(i).toString();
+                }
+                else{
+                    ret += innerSet.get(i).toString() + ", ";
+                }
 	  }
+          ret += " }";
 	  return ret;
     }
 }
