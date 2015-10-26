@@ -110,7 +110,7 @@ public class JStack<T> extends ReceiverAdapter {
     @Override
     public String toString() {
         String ret = "";
-        for (int i = 0; i < innerStack.size(); i++) {
+        for (int i = innerStack.size()-1 ; i >= 0; i--) {
             ret += "[" + innerStack.elementAt(i).toString() + "]\n";
         }
         return ret;
