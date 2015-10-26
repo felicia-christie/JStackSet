@@ -44,17 +44,20 @@ public class JStack<T> extends ReceiverAdapter {
 
     public void receive(Message msg) {
 //        String line=msg.getSrc() + ": " + msg.getObject();
-        JCommand c = (JCommand) msg.getObject();
-        if (c.command.equals("pop")){
-            synchronized(innerStack){
-                innerStack.pop();
+        if (!msg.getSrc().equals(msg.getDest())){
+            JCommand c = (JCommand) msg.getObject();
+            if (c.command.equals("pop")){
+                synchronized(innerStack){
+                    innerStack.pop();
+                }
+            }
+            else if (c.command.equals("push")){
+                synchronized(innerStack){
+                    innerStack.push((T) c.data);
+                }
             }
         }
-        else if (c.command.equals("push")){
-            synchronized(innerStack){
-                innerStack.push((T) c.data);
-            }
-        }
+        
     }
     
     public void send(String command,T Obj){
@@ -110,8 +113,8 @@ public class JStack<T> extends ReceiverAdapter {
     @Override
     public String toString() {
         String ret = "";
-        for (int i = 0; i < innerStack.size(); i++) {
-            ret += innerStack.elementAt(i).toString();
+        for (int i = innerStack.size()-1 ; i >= 0; i--) {
+            ret += "[" + innerStack.elementAt(i).toString() + "]\n";
         }
         return ret;
     }
