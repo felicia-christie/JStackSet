@@ -43,7 +43,7 @@ public class JStackSets {
 	  }
     }
     
-    public static void ImplStack(){
+    public static void ImplStack() throws Exception{
 	  JStack<Integer> integerStack = new JStack<>();
 	  while (!exit){
 		System.out.println("Current stack state:");
@@ -62,18 +62,21 @@ public class JStackSets {
 			  int temp;
 			  temp = in.nextInt();
 			  integerStack.push(temp);
+			  break;
 		    case 2:
 			  System.out.println("Pop'd value: " + integerStack.pop());
+			  break;
 		    case 3:
 			  System.out.println("Top value: " + integerStack.top());
+			  break;
 		    case 4:
 			  exit = true;
+			  System.exit(0);
+			  break;
 			  
 		    default:
 			  System.out.println("Wrong option!");
 		}
-		
-		
 	  }
     }
     public static void ImplSet(){
