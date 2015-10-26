@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author SPM
+ * @author Waxrain
  */
 public class JSet<T> {
     ArrayList<T> innerSet;
@@ -39,4 +39,11 @@ public class JSet<T> {
 	  return(innerSet.contains(obj));
     }
     
+    public String toString(){
+	  String ret = "";
+	  for (int i = 0; i < innerSet.size(); i++){
+		ret += innerSet.get(i).toString();
+	  }
+	  return ret;
+    }
 }

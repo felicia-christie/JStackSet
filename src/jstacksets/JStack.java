@@ -10,7 +10,7 @@ import java.util.Stack;
 
 /**
  *
- * @author SPM
+ * @author Waxrain
  */
 public class JStack<T> {
     
@@ -30,6 +30,15 @@ public class JStack<T> {
     }
     public int size(){
 	  return innerStack.size();
+    }
+    
+    @Override
+    public String toString(){
+	  String ret = "";
+	  for (int i = 0; i < innerStack.size(); i++){
+		ret += innerStack.elementAt(i).toString();
+	  }
+	  return ret;
     }
     
 }
