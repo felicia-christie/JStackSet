@@ -44,7 +44,7 @@ public class JStack<T> extends ReceiverAdapter {
 
     public void receive(Message msg) {
 //        String line=msg.getSrc() + ": " + msg.getObject();
-        if (!msg.getSrc().equals(msg.getDest())){
+        if (!msg.getSrc().equals(channel.getName())){
             JCommand c = (JCommand) msg.getObject();
             if (c.command.equals("pop")){
                 synchronized(innerStack){
@@ -83,7 +83,6 @@ public class JStack<T> extends ReceiverAdapter {
             innerStack.clear();
             innerStack.addAll(list);
         }
-//        System.out.println("received innerStack (" + list.size() + " messages in chat history):");
     }
     
     public void push(T obj) {
